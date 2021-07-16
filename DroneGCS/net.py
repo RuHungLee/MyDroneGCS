@@ -1,7 +1,9 @@
 from threading import Thread
+from proto import packetHandler , PID1
 import socket
 import time
 import sys
+
 
 class udpServ():
     
@@ -25,15 +27,15 @@ class udpServ():
     
     def cnt(self):
 
-        try:
+
             if(self.connect == 0):
 
                 self.connect = 1
+                self.main_edit.nametowidget('!button').config(text = '斷開連接')
                 self.sockSnd = socket.socket(socket.AF_INET , socket.SOCK_DGRAM)
                 self.sockRcv = socket.socket(socket.AF_INET , socket.SOCK_DGRAM)
                 self.sockRcv.bind(('' , self.lport))
                 Thread(target = self.recv , daemon = True).start()
-                self.main_edit.nametowidget('!button').config(text = '斷開連接')
 
             elif(self.connect == 1):
 
@@ -42,23 +44,31 @@ class udpServ():
                 self.sockRcv.close()
                 self.main_edit.nametowidget('!button').config(text = '開始連接')
         
-        except:
-            print('連接失敗...')
-            sys.exit()
-    
+
     def recv(self):
         
         while 1:
-            if(self.connect == 1):
-                try:
-                    self.n = self.n + 1
-                    self.sockRcv.settimeout(0.0001)
-                    d , s = self.sockRcv.recvfrom(1024)
-                    print("received message: %s" % s)
-                except socket.timeout:
-                    self.n = 0
-                    print("時間到")
 
+            try:
+
+                self.sockRcv.settimeout(1)
+                s , d = self.sockRcv.recvfrom(1024)
+                packetHandler(s , self.main_edit)
+                # print("received message: " , s)
+                
+            except socket.timeout:
+
+                print('時間到')
+
+    def sendPID1(self):
+        
+        if(self.connect == 1):
+            msg = PID1()
+            print('send...')
+            for i in range(5):
+                self.sockSnd.sendto(msg, (self.rip , self.rport))
+        else:
+            print('尚未連接')
 
 udpserv = udpServ(8086 , '192.168.4.1' , 8086)
 

@@ -1,27 +1,42 @@
 from cntPage import *
 from tkinter import *
 from DroneWt import *
+from proto import *
+from plot import *
 from functools import partial
 import tkinter as tk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib import animation, figure
+
 
 postPage = list()
 postPageFirst = 0
+dv1 = None
 
+def animate(self, *args):
+    print('ani')
+    xs.append(time.clock())
+    ys.append(time.clock() + np.random.random())
+    xs = xs[-100:]
+    ys = ys[-100:]
+    ax1.clear()
+    ax1.plot(xs, ys)
 
 # 飛控姿態控制頁面配置
 def open_post(main_edit):
 
-    global postPage , postPageFirst
+    global postPage , postPageFirst , dv1
 
     clean_main(main_edit)
 
     if(postPageFirst == 1):
-        resume_postPage()
-    else:
-        postPageFirst = 1
 
+        resume_postPage()
+
+    else:
+        
         # PID title 
-        pidt = tk.Label(main_edit , font=("Arial Bold", 15) , text = 'PID 參數設定' , anchor="w" , justify=LEFT)
+        pidt = tk.Label(main_edit , font=("Arial Bold", 15) , text = 'PID 參數設定' , anchor="w" , justify=LEFT )
         
         # roll PID
         p1n = tk.Label(main_edit , text = 'roll P : ' , anchor="w" , justify=LEFT , width = 8)
@@ -105,10 +120,45 @@ def open_post(main_edit):
         btn_setPID = tk.Button(main_edit , text="寫入飛控", command=partial(writeinPID , main_edit)) # 按下後顯示實時測試頁面
         btn_setPID.grid(row=15 , column=0, sticky="ew", padx = (110 , 10) , pady= (50 , 10))
 
-        for item in [pidt , p1n , p1 ,i1n , i1 , d1n , d1 , p2n , p2 , i2n , i2 , d2n , d2 , p3n , p3 , i3n , i3 , d3n , d3 , pos , thrn , thr , rolln , roll , pitchn , pitch , yawn , yaw]:
+        postFrame = tk.Frame(main_edit , padx=30)
+        postFrame.grid(row=0 , column=2 , columnspan=5 , rowspan=6 , ipadx = 300)
+        postRoll = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'Roll : 0.00' , anchor="w" , justify=LEFT , width = 15)
+        postPitch = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'Pitch : 0.00' , anchor="w" , justify=LEFT , width = 15)
+        postYaw = tk.Label(postFrame , font=("Arial Bold", 15), text = 'Yaw : 0.00' , anchor="w" , justify=LEFT , width = 15)
+        accX = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'ACC_X : 0.00' , anchor="w" , justify=LEFT , width = 15)
+        accY = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'ACC_Y : 0.00' , anchor="w" , justify=LEFT , width = 15)
+        accZ = tk.Label(postFrame , font=("Arial Bold", 15), text = 'ACC_Z : 0.00' , anchor="w" , justify=LEFT , width = 15)
+        gyroX = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'GYRO_X : 0.00' , anchor="w" , justify=LEFT , width = 15)
+        gyroY = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'GYRO_Y : 0.00' , anchor="w" , justify=LEFT , width = 15)
+        gyroZ = tk.Label(postFrame , font=("Arial Bold", 15), text = 'GYRO_Z : 0.00' , anchor="w" , justify=LEFT , width = 15)
+        magX = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'MAG_X : 0.00' , anchor="w" , justify=LEFT , width = 15)
+        magY = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'MAG_Y : 0.00' , anchor="w" , justify=LEFT , width = 15)
+        magZ = tk.Label(postFrame , font=("Arial Bold", 15), text = 'MAG_Z : 0.00' , anchor="w" , justify=LEFT , width = 15)
+
+        postRoll.grid(row=0 , column=0 ,  padx = (100 , 30) , pady= 10) 
+        postPitch.grid(row=1 , column=0 ,  padx = (100 , 30) , pady= 10)
+        postYaw.grid(row=2 , column=0 ,  padx =  (100 , 30) , pady= 10)
+        accX.grid(row=0 , column=1 ,  padx =  (100 , 30), pady= 10)
+        accY.grid(row=1 , column=1 ,  padx =  (100 , 30) , pady= 10)
+        accZ.grid(row=2 , column=1 ,  padx =  (100 , 30), pady= 10)
+        gyroX.grid(row=0 , column=2 ,  padx =  (100 , 30) , pady= 10)
+        gyroY.grid(row=1 , column=2 ,  padx =  (100 , 30), pady= 10)
+        gyroZ.grid(row=2 , column=2 ,  padx =  (100 , 30) , pady= 10)
+        magX.grid(row=0 , column=3 ,  padx =  (100 , 30) , pady= 10)
+        magY.grid(row=1 , column=3 ,  padx =  (100 , 30), pady= 10)
+        magZ.grid(row=2 , column=3 ,  padx = (100 , 30) , pady= 10)
+
+        plotFrame = tk.Frame(main_edit , padx=30)
+        plotFrame.grid(row=6 , column=2 , columnspan=8 , rowspan=8 , ipadx = 250)
+        rollViz = tk.Label(plotFrame , font=("Arial Bold", 15) , text = 'ROLL 視圖' , anchor="w" , justify=LEFT , width = 15)
+        rollViz.grid(row=0 , column=0 ,  padx = (100 , 30) , pady= 10) 
+        # fig = figure.Figure(figsize=(15, 6), dpi=80)
+        dv1 = DV.update(15 , 6 , 80 , plotFrame)
+        for item in [pidt , p1n , p1 ,i1n , i1 , d1n , d1 , p2n , p2 , i2n , i2 , d2n , d2 , p3n , p3 , i3n , i3 , d3n
+         , d3 , pos , thrn , thr , rolln , roll , pitchn , pitch , yawn , yaw , btn_setPID , postFrame , plotFrame]:
             postPage.append(item)
 
-
+        postPageFirst = 1
 
 def writeinPID(main_edit):
 
@@ -120,7 +170,7 @@ def writeinPID(main_edit):
     up.update(entryAry[0].get() , entryAry[1].get() , entryAry[2].get() , entryAry[3].get() ,
     entryAry[4].get() , entryAry[5].get() , entryAry[6].get() , entryAry[7].get() , entryAry[8].get() , 
     entryAry[9].get() , entryAry[10].get() , entryAry[11].get() , entryAry[12].get())
-    up.transferP()
+    udpserv.sendPID1()
 
 def resume_postPage():
     for widget in postPage:

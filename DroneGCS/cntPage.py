@@ -1,6 +1,6 @@
 from tkinter import *
-from net import *
 import tkinter as tk
+from net import *
 from functools import partial
 
 CntPage = list()
@@ -21,7 +21,7 @@ def open_cnt(main_edit):
         cntn = tk.Label(main_edit , font=("Arial Bold", 15) , text = '飛控連接')
         ripn = tk.Label(main_edit , text = 'remote IP : ' , anchor="w" , justify=LEFT , width = 15)
         rip = tk.Entry(main_edit)
-        rip.insert(END , '192.168.4.2')
+        rip.insert(END , '192.168.4.1')
         rportn = tk.Label(main_edit , text = 'remote Port : ' , anchor="w" , justify=LEFT , width = 15)
         rport = tk.Entry(main_edit)
         rport.insert(END , '8086')
@@ -43,7 +43,7 @@ def open_cnt(main_edit):
             btn_connect.config(text='開始連接')
         elif(udpserv.connect == 1):
             btn_connect.config(text='斷開連接')
-        # print(main_edit)
+    
         btn_connect.grid(row=4 , column=0, sticky="ew", padx = (110 , 20) , pady= 50)
         
         for item in [cntn , ripn , rip , rportn , rport , lportn , lport , btn_connect]:
@@ -70,7 +70,6 @@ def udpConnect(main_edit):
         udpserv.cnt()
 
 # 清除主 frame
-
 def clean_main(main_edit):
     for widget in main_edit.winfo_children():
         widget.grid_remove()

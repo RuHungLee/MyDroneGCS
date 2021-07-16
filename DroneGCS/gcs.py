@@ -6,6 +6,7 @@ from DroneWt import *
 from postPage import *
 from cntPage import *
 from net import *
+from plot import *
 
 class GCS():
 
@@ -36,8 +37,14 @@ class GCS():
 
 gcs = GCS()
 
-
 if __name__ == '__main__':
+
+    # gcs.window.after(10 , functools.partial(DronePlot, gcs))
     
+    # 初始化頁面
+    open_cnt(gcs.main_edit)
+    open_post(gcs.main_edit)
+
     gcs.window.mainloop()
+    
 
