@@ -20,7 +20,8 @@ def checkSum(*args):
 
     sum = 0
     for v in args:
-        sum += v
+        sum += v & 0xff
+        sum += (v & 0xff00)>>8
     checksum = sum & 0xff
     return checksum
 
@@ -38,7 +39,17 @@ def PID1():
     packet += p16(up.p3)
     packet += p16(up.i3)
     packet += p16(up.d3)
-    checksum = checkSum(up.p1 , up.i1 , up.d1 , up.p2 , up.i2 , up.d2 , up.p3 , up.i3 , up.d3)
+    packet += p16(up.p1_rate)
+    packet += p16(up.i1_rate)
+    packet += p16(up.d1_rate)
+    packet += p16(up.p2_rate)
+    packet += p16(up.i2_rate)
+    packet += p16(up.d2_rate)
+    packet += p16(up.p3_rate)
+    packet += p16(up.i3_rate)
+    packet += p16(up.d3_rate)
+    checksum = checkSum(up.p1 , up.i1 , up.d1 , up.p2 , up.i2 , up.d2 , up.p3 , up.i3 , up.d3 , up.p1_rate , up.i1_rate , up.d1_rate , up.p2_rate , up.i2_rate , up.d2_rate , 
+    up.p3_rate , up.i3_rate , up.d3_rate)
     packet += p8(checksum)
     print(packet)
     return packet
