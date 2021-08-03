@@ -90,6 +90,24 @@ def open_post(main_edit):
         d3n.grid(row=9 , column=0 , padx = 20 , pady= 10)
         d3.grid(row=9 , column=1 , padx = 20 , pady= 10)
 
+        # height PID
+        p4n = tk.Label(main_edit , text = 'height P : ' , anchor="w" , justify=LEFT , width = 8)
+        p4 = tk.Entry(main_edit)
+        p4.insert(END , '0')
+        i4n = tk.Label(main_edit , text = 'height I : ' , anchor="w" , justify=LEFT , width = 8)
+        i4 = tk.Entry(main_edit)
+        i4.insert(END , '0')
+        d4n = tk.Label(main_edit , text = 'height D : ' , anchor="w" , justify=LEFT , width = 8)
+        d4 = tk.Entry(main_edit)
+        d4.insert(END , '0')
+        p4n.grid(row=10, column=0,  padx = 20, pady= 10)
+        p4.grid(row=10, column=1, padx = 20 , pady= 10)
+        i4n.grid(row=11, column=0, padx = 20 , pady= 10)
+        i4.grid(row=11, column=1, padx = 20 , pady= 10)
+        d4n.grid(row=12 , column=0 , padx = 20 , pady= 10)
+        d4.grid(row=12 , column=1 , padx = 20 , pady= 10)
+
+
         # roll rate PID
         p1n_rate = tk.Label(main_edit , text = 'roll rate P : ' , anchor="w" , justify=LEFT , width = 25)
         p1_rate = tk.Entry(main_edit)
@@ -141,6 +159,22 @@ def open_post(main_edit):
         d3n_rate.grid(row=9 , column=2 , padx = 20 , pady= 10)
         d3_rate.grid(row=9 , column=3 , padx = 20 , pady= 10)
 
+        # height rate PID
+        p4n_rate = tk.Label(main_edit , text = 'height rate P : ' , anchor="w" , justify=LEFT , width = 25)
+        p4_rate = tk.Entry(main_edit)
+        p4_rate.insert(END , '0')
+        i4n_rate = tk.Label(main_edit , text = 'height rate I : ' , anchor="w" , justify=LEFT , width = 25)
+        i4_rate = tk.Entry(main_edit)
+        i4_rate.insert(END , '0')
+        d4n_rate = tk.Label(main_edit , text = 'height rate D : ' , anchor="w" , justify=LEFT , width = 25)
+        d4_rate = tk.Entry(main_edit)
+        d4_rate.insert(END , '0')
+        p4n_rate.grid(row=10, column=2 ,  padx = 20, pady= 10)
+        p4_rate.grid(row=10, column=3 , padx = 20 , pady= 10)
+        i4n_rate.grid(row=11, column=2 , padx = 20 , pady= 10)
+        i4_rate.grid(row=11, column=3 , padx = 20 , pady= 10)
+        d4n_rate.grid(row=12 , column=2 , padx = 20 , pady= 10)
+        d4_rate.grid(row=12 , column=3 , padx = 20 , pady= 10)
 
         # throttle and angle title
         pos =  tk.Label(main_edit , font=("Arial Bold", 15) , text = 'PWN 值 / 姿態角' , anchor="w" , justify=LEFT)
@@ -158,19 +192,19 @@ def open_post(main_edit):
         yawn = tk.Label(main_edit , text = 'yaw : ' , anchor="w" , justify=LEFT , width = 8)
         yaw = tk.Entry(main_edit)
         yaw.insert(END , '0')
-        pos.grid(row = 10 , column=0,  padx = (110 , 20) , pady= 30)
-        thrn.grid(row=11, column=0,  padx = 20, pady= (30 , 10))
-        thr.grid(row=11, column=1, padx = 20 , pady= (30 , 10))
-        rolln.grid(row=12, column=0, padx = 20 , pady= 10)
-        roll.grid(row=12, column=1, padx = 20 , pady= 10)
-        pitchn.grid(row=13 , column=0 , padx = 20 , pady= 10)
-        pitch.grid(row=13 , column=1 , padx = 20 , pady= 10)
-        yawn.grid(row=14 , column=0 , padx = 20 , pady= 10)
-        yaw.grid(row=14 , column=1 , padx = 20 , pady= 10)
+        pos.grid(row = 14 , column=0,  padx = (110 , 20) , pady= 30)
+        thrn.grid(row= 15, column=0,  padx = 20, pady= 10)
+        thr.grid(row= 15, column=1, padx = 20 , pady= 10)
+        rolln.grid(row= 16, column=0, padx = 20 , pady= 10)
+        roll.grid(row= 16, column=1, padx = 20 , pady= 10)
+        pitchn.grid(row= 17 , column=0 , padx = 20 , pady= 10)
+        pitch.grid(row= 17 , column=1 , padx = 20 , pady= 10)
+        yawn.grid(row= 18 , column=0 , padx = 20 , pady= 10)
+        yaw.grid(row= 18 , column=1 , padx = 20 , pady= 10)
 
         # 寫入飛控
         btn_setPID = tk.Button(main_edit , text="寫入飛控", command=partial(writeinPID , main_edit)) # 按下後顯示實時測試頁面
-        btn_setPID.grid(row=15 , column=0, sticky="ew", padx = (110 , 10) , pady= (50 , 10))
+        btn_setPID.grid(row=19 , column=0, sticky="ew", padx = (110 , 10) , pady= (50 , 10))
 
         postFrame = tk.Frame(main_edit , padx=30)
         postFrame.grid(row=13 , column=5 , columnspan=8 , rowspan=9 , padx = 10 , pady = 30)
@@ -186,6 +220,8 @@ def open_post(main_edit):
         magX = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'MAG_X : 0.00' , anchor="w" , justify=LEFT , width = 15)
         magY = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'MAG_Y : 0.00' , anchor="w" , justify=LEFT , width = 15)
         magZ = tk.Label(postFrame , font=("Arial Bold", 15), text = 'MAG_Z : 0.00' , anchor="w" , justify=LEFT , width = 15)
+        height = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'Height : 0.00' , anchor="w" , justify=LEFT , width = 15)
+        vZ = tk.Label(postFrame , font=("Arial Bold", 15), text = 'V_Z : 0.00' , anchor="w" , justify=LEFT , width = 15)
 
         postRoll.grid(row=0 , column=0 ,  padx = (0 , 30) , pady= 10) 
         postPitch.grid(row=1 , column=0 ,  padx = (0 , 30) , pady= 10)
@@ -199,6 +235,8 @@ def open_post(main_edit):
         magX.grid(row=0 , column=3 ,  padx =  (20 , 30) , pady= 10)
         magY.grid(row=1 , column=3 ,  padx =  (20 , 30), pady= 10)
         magZ.grid(row=2 , column=3 ,  padx = (20 , 30) , pady= 10)
+        height.grid(row=3 , column=0 ,  padx =  (0 , 30), pady= 10)
+        vZ.grid(row=3 , column=1 ,  padx = (20 , 30) , pady= 10)
 
         # plotFrame = tk.Frame(main_edit)
         # plotFrame.grid(row=0 , column=4 , columnspan=10 , rowspan=10 , ipadx = 250)
@@ -208,9 +246,9 @@ def open_post(main_edit):
         # dv1 = DV.update(15 , 6 , 80 , plotFrame)
 
         #delte plot frame.
-        for item in [pidt , p1n , p1 ,i1n , i1 , d1n , d1 , p2n , p2 , i2n , i2 , d2n , d2 , p3n , p3 , i3n , i3 , d3n , d3 
+        for item in [pidt , p1n , p1 ,i1n , i1 , d1n , d1 , p2n , p2 , i2n , i2 , d2n , d2 , p3n , p3 , i3n , i3 , d3n , d3  , p4n , p4 ,i4n , i4 , d4n , d4
          , p1n_rate , p1_rate ,i1n_rate , i1_rate , d1n_rate , d1_rate , p2n_rate , p2_rate , i2n_rate , i2_rate , d2n_rate , d2_rate , p3n_rate , p3_rate , i3n_rate , i3_rate , d3n_rate , d3_rate 
-         , pos , thrn , thr , rolln , roll , pitchn , pitch , yawn , yaw , btn_setPID , postFrame]:
+         , p4n_rate , p4_rate ,i4n_rate , i4_rate , d4n_rate , d4_rate , pos , thrn , thr , rolln , roll , pitchn , pitch , yawn , yaw , btn_setPID , postFrame]:
             postPage.append(item)
 
         postPageFirst = 1
@@ -226,7 +264,10 @@ def writeinPID(main_edit):
     entryAry[4].get() , entryAry[5].get() , entryAry[6].get() , entryAry[7].get() , entryAry[8].get() , 
     entryAry[9].get() , entryAry[10].get() , entryAry[11].get() , entryAry[12].get() , 
     entryAry[13].get() , entryAry[14].get() , entryAry[15].get() , entryAry[16].get() ,
-    entryAry[17].get() , entryAry[18].get() , entryAry[19].get() , entryAry[20].get() , entryAry[21].get())
+    entryAry[17].get() , entryAry[18].get() , entryAry[19].get() , entryAry[20].get() , entryAry[21].get(),
+    entryAry[22].get() , entryAry[23].get() , entryAry[24].get() , entryAry[25].get() , 
+    entryAry[26].get() , entryAry[27].get())
+    
     udpserv.sendPID1()
 
 def resume_postPage():
