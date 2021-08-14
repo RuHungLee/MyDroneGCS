@@ -1,6 +1,8 @@
 # MyDroneGCS
 
-簡易四軸地面站
-* 僅支援 UDP 
+* UDP connection
+* Dynamically adjust pid parameters.
+* Dynamically adjust the priority and freq of tasks.
+* Monitor data collected by sensors.
 
 ![](https://github.com/RuHungLee/MyDroneGCS/blob/main/gcs.PNG)
