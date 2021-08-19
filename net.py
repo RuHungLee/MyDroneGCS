@@ -1,5 +1,5 @@
 from threading import Thread
-from proto import packetHandler , PID1
+from proto import packetHandler , PID1 , TSK1
 import socket
 import time
 import sys
@@ -64,6 +64,16 @@ class udpServ():
         
         if(self.connect == 1):
             msg = PID1()
+            print('send...')
+            for i in range(5):
+                self.sockSnd.sendto(msg, (self.rip , self.rport))
+        else:
+            print('尚未連接')
+
+    def sendTSK1(self):
+
+        if(self.connect == 1):
+            msg = TSK1()
             print('send...')
             for i in range(5):
                 self.sockSnd.sendto(msg, (self.rip , self.rport))
