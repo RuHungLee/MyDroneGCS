@@ -46,6 +46,7 @@ if __name__ == '__main__':
     open_cnt(gcs.main_edit)
     open_post(gcs.main_edit)
     open_rtos(gcs.main_edit)
+    open_cnt(gcs.main_edit)
 
     gcs.window.mainloop()
     

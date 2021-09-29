@@ -207,7 +207,7 @@ def open_post(main_edit):
         btn_setPID.grid(row=19 , column=0, sticky="ew", padx = (110 , 10) , pady= (50 , 10))
 
         postFrame = tk.Frame(main_edit , padx=30)
-        postFrame.grid(row=13 , column=5 , columnspan=8 , rowspan=9 , padx = 10 , pady = 30)
+        postFrame.grid(row=13 , column=5  , rowspan=9 , columnspan=8 , padx = 10 , pady = 30)
         postRoll = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'Roll : 0.00' , anchor="w" , justify=LEFT , width = 15)
         postPitch = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'Pitch : 0.00' , anchor="w" , justify=LEFT , width = 15)
         postYaw = tk.Label(postFrame , font=("Arial Bold", 15), text = 'Yaw : 0.00' , anchor="w" , justify=LEFT , width = 15)
@@ -239,10 +239,10 @@ def open_post(main_edit):
         vZ.grid(row=3 , column=1 ,  padx = (20 , 30) , pady= 10)
 
         # plotFrame = tk.Frame(main_edit)
-        # plotFrame.grid(row=0 , column=4 , columnspan=10 , rowspan=10 , ipadx = 250)
-        # rollViz = tk.Label(plotFrame , font=("Arial Bold", 15) , text = 'ROLL 視圖' , anchor="w" , justify=LEFT , width = 15)
-        # rollViz.grid(row=0 , column=0 ,  padx = (100 , 30) , pady= 10) 
-        # # fig = figure.Figure(figsize=(15, 6), dpi=80)
+        # plotFrame.grid(row=0 , column=5 , rowspan=20 , columnspan=20 )
+        # # rollViz = tk.Label(plotFrame , font=("Arial Bold", 15) , text = 'ROLL 視圖' , anchor="w" , justify=LEFT , width = 15)
+        # # rollViz.grid(row=0 , column=0) 
+        # fig = figure.Figure(figsize=(15, 6), dpi=80)
         # dv1 = DV.update(15 , 6 , 80 , plotFrame)
 
         #delte plot frame.

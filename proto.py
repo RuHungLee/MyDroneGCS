@@ -2,9 +2,9 @@ from DroneWt import DS , up , tsks
 from pwn import *
 
 def packetHandler(s , main_edit):
-    if(s[:2] == b'\xAA\xAA'):
+    if(s[:2] == b'\xAA\xBB'):
         op = s[2]
-        if(op == 1):
+        if(op == 52):
             length = s[3]
             roll = int.from_bytes(s[4:6], byteorder='big' , signed=True)/100.0
             pitch = int.from_bytes(s[6:8], byteorder='big' , signed=True)/100.0
@@ -16,6 +16,29 @@ def packetHandler(s , main_edit):
             main_edit.nametowidget('.!frame.!frame.!label3').config(text = 'Yaw : %.2f'%DS.yaw)
             main_edit.nametowidget('.!frame.!frame.!label13').config(text = 'Height : %.2f'%DS.height)
             # print('length : %d , roll : %.3f , pitch : %.3f , yaw : %.3f' % (length , roll , pitch , yaw))
+        elif(op == 53):
+            print(op)
+            length = s[3]
+            
+            tsk1 = int.from_bytes(s[4:8], byteorder='big', signed=False)
+            tsk2 = int.from_bytes(s[8:12], byteorder='big', signed=False)
+            tsk3 = int.from_bytes(s[12:16], byteorder='big', signed=False)
+            tsk4 = int.from_bytes(s[16:20], byteorder='big', signed=False)
+            tsk5 = int.from_bytes(s[20:24], byteorder='big', signed=False)
+            print(tsk1 , tsk2 , tsk3 , tsk4 , tsk5)
+
+            main_edit.nametowidget('.!frame.!frame2.!label').config(text = '任務一執行頻率 (HZ) : %d'%tsk1)
+            main_edit.nametowidget('.!frame.!frame2.!label2').config(text = '任務二執行頻率 (HZ) : %d'%tsk2)
+            main_edit.nametowidget('.!frame.!frame2.!label3').config(text = '任務三執行頻率 (HZ) : %d'%tsk3)
+            main_edit.nametowidget('.!frame.!frame2.!label4').config(text = '任務四執行頻率 (HZ) : %d'%tsk4)
+            main_edit.nametowidget('.!frame.!frame2.!label5').config(text = '任務五執行頻率 (HZ) : %d'%tsk5)
+
+            # main_edit.nametowidget('.!frame.!frame.!label4').config(text = 'ACC_X : %d'%anglePID)
+            # main_edit.nametowidget('.!frame.!frame.!label5').config(text = 'ACC_Y : %d'%sendStatus)
+            # main_edit.nametowidget('.!frame.!frame.!label6').config(text = 'ACC_Z : %d'%pktHdl)
+            # print('anglePID: ' , anglePID)
+            # print('sendStatus: ' , sendStatus)
+            # print('pktHdl: ' , pktHdl)
 
 def checkSum(*args):
 
@@ -89,5 +112,5 @@ def TSK1():
     packet += p8(checksum)
     print(packet)
 
-    return 1
+    return packet
     

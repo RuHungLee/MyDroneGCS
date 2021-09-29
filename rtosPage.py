@@ -108,10 +108,31 @@ def open_rtos(main_edit):
         tsks_Btn = tk.Button(main_edit , text="寫入飛控", command=partial(writeinTSK , main_edit)) # 按下後顯示實時測試頁面
         tsks_Btn.grid(row=9 , column=0, sticky="ew", padx = (110 , 20) , pady= (50 , 10))
 
+        rtosFrame = tk.Frame(main_edit)
+        rtosFrame.grid(row=25 , column=0, sticky="ew" , rowspan=9 , columnspan=8 , padx = 110 , pady = 50)
+        tsk1o = tk.Label(rtosFrame , font=("Arial Bold", 15) , pady =  10 , text = '任務一執行頻率 (HZ) : 0         ' , anchor="w" , justify=LEFT  , width = 30)
+        tsk2o = tk.Label(rtosFrame , font=("Arial Bold", 15) , pady =  10 , text = '任務二執行頻率 (HZ) : 0         ' , anchor="w" , justify=LEFT  , width = 30)
+        tsk3o = tk.Label(rtosFrame , font=("Arial Bold", 15) , pady =  10 , text = '任務三執行頻率 (HZ) : 0         ' , anchor="w" , justify=LEFT  , width = 30)
+        tsk4o = tk.Label(rtosFrame , font=("Arial Bold", 15) , pady =  10 , text = '任務四執行頻率 (HZ) : 0         ' , anchor="w" , justify=LEFT  , width = 30)
+        tsk5o = tk.Label(rtosFrame , font=("Arial Bold", 15) , pady =  10 , text = '任務五執行頻率 (HZ) : 0         ' , anchor="w" , justify=LEFT  , width = 30)
+        tsk6o = tk.Label(rtosFrame , font=("Arial Bold", 15) , pady =  10 , text = '任務六執行頻率 (HZ) : 0         ' , anchor="w" , justify=LEFT  , width = 30)
+        tsk7o = tk.Label(rtosFrame , font=("Arial Bold", 15) , pady =  10 , text = '任務七執行頻率 (HZ) : 0         ' , anchor="w" , justify=LEFT  , width = 30)
+        tsk8o = tk.Label(rtosFrame , font=("Arial Bold", 15) , pady =  10 , text = '任務八執行頻率 (HZ) : 0         ' , anchor="w" , justify=LEFT  , width = 30)
+
+
+        tsk1o.grid(row=1 , column=0 ) 
+        tsk2o.grid(row=2 , column=0 )
+        tsk3o.grid(row=3 , column=0 )
+        tsk4o.grid(row=4 , column=0 )
+        tsk5o.grid(row=5 , column=0 )
+        tsk6o.grid(row=6 , column=0 )
+        tsk7o.grid(row=7 , column=0 )
+        tsk8o.grid(row=8 , column=0 )
+
         #delte plot frame.
         for item in [tsks , tsk1n , tsk1p , tsk1f , tsk2n , tsk2p , tsk2f , tsk3n , tsk3p , tsk3f,
         tsk4n , tsk4p , tsk4f , tsk5n , tsk5p , tsk5f , tsk6n , tsk6p , tsk6f , tsk7n , tsk7p , tsk7f , 
-        tsk8n , tsk8p , tsk8f , tsks_Btn]:
+        tsk8n , tsk8p , tsk8f , tsks_Btn , rtosFrame]:
             rtosPage.append(item)
 
         rtosPageFirst = 1
@@ -122,7 +143,6 @@ def resume_rtosPage():
     for widget in rtosPage:
         print(widget)
         widget.grid()
-
 
 
 def writeinTSK(main_edit):
