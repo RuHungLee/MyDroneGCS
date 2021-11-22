@@ -25,6 +25,7 @@ def open_rtos(main_edit):
         
         # tsk1
         tsk1n = tk.Label(main_edit , text = '任務一(優先級/頻率) : ' , anchor="w" , justify=RIGHT , width = 15)
+        print(tsk1n)
         tsk1p = tk.Entry(main_edit)
         tsk1f = tk.Entry(main_edit)
         tsk1p.insert(END , '0')
@@ -36,6 +37,7 @@ def open_rtos(main_edit):
         
         # tsk2
         tsk2n = tk.Label(main_edit , text = '任務二(優先級/頻率) : ' , anchor="w" , justify=RIGHT , width = 15)
+        print(tsk2n)
         tsk2p = tk.Entry(main_edit)
         tsk2f = tk.Entry(main_edit)
         tsk2p.insert(END , '0')

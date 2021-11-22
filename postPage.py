@@ -5,27 +5,44 @@ from proto import *
 from plot import *
 from functools import partial
 import tkinter as tk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib import animation, figure
-
+from matplotlib.backends.backend_tkagg import (
+    FigureCanvasTkAgg, NavigationToolbar2Tk)
+from matplotlib.backend_bases import key_press_handler
+from matplotlib import pyplot as plt, animation
+import numpy as np
+import time
 
 postPage = list()
 postPageFirst = 0
 dv1 = None
+anim = None
 
-def animate(self, *args):
-    print('ani')
-    xs.append(time.clock())
-    ys.append(time.clock() + np.random.random())
-    xs = xs[-100:]
-    ys = ys[-100:]
-    ax1.clear()
-    ax1.plot(xs, ys)
+plt.rcParams["figure.figsize"] = [8.00, 5.00]
+# plt.rcParams["figure.autolayout"] = True
+plt.axes(xlim=(0, 2), ylim=(-2, 2))
+fig = plt.Figure(dpi=100)
+ax = fig.add_subplot(xlim=(0, 2), ylim=(-45, 45))
+line, = ax.plot([], [], lw=2)
+
+def init():
+    global x, y
+    x = np.linspace(0, 2, 1000)
+    y = np.zeros(1000)
+    print(x , y)
+    line.set_data(x , y)
+    return line,
+
+def animate(i):
+    global x , y
+    y = np.roll(y , -1)
+    y[-1] = DS.roll
+    line.set_data(x, y)
+    return line,
 
 # 飛控姿態控制頁面配置
 def open_post(main_edit):
 
-    global postPage , postPageFirst , dv1
+    global postPage , postPageFirst , dv1 , fig , ax , line , anim
 
     clean_main(main_edit)
 
@@ -204,11 +221,12 @@ def open_post(main_edit):
 
         # 寫入飛控
         btn_setPID = tk.Button(main_edit , text="寫入飛控", command=partial(writeinPID , main_edit)) # 按下後顯示實時測試頁面
-        btn_setPID.grid(row=19 , column=0, sticky="ew", padx = (110 , 10) , pady= (50 , 10))
+        btn_setPID.grid(row=19 , column=0, sticky="ew", padx = (110 , 10) , pady= 100)
 
         postFrame = tk.Frame(main_edit , padx=30)
         postFrame.grid(row=13 , column=5  , rowspan=9 , columnspan=8 , padx = 10 , pady = 30)
         postRoll = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'Roll : 0.00' , anchor="w" , justify=LEFT , width = 15)
+        print('postRoll : ' , postRoll)
         postPitch = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'Pitch : 0.00' , anchor="w" , justify=LEFT , width = 15)
         postYaw = tk.Label(postFrame , font=("Arial Bold", 15), text = 'Yaw : 0.00' , anchor="w" , justify=LEFT , width = 15)
         accX = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'ACC_X : 0.00' , anchor="w" , justify=LEFT , width = 15)
@@ -238,20 +256,27 @@ def open_post(main_edit):
         height.grid(row=3 , column=0 ,  padx =  (0 , 30), pady= 10)
         vZ.grid(row=3 , column=1 ,  padx = (20 , 30) , pady= 10)
 
-        # plotFrame = tk.Frame(main_edit)
-        # plotFrame.grid(row=0 , column=5 , rowspan=20 , columnspan=20 )
-        # # rollViz = tk.Label(plotFrame , font=("Arial Bold", 15) , text = 'ROLL 視圖' , anchor="w" , justify=LEFT , width = 15)
-        # # rollViz.grid(row=0 , column=0) 
-        # fig = figure.Figure(figsize=(15, 6), dpi=80)
-        # dv1 = DV.update(15 , 6 , 80 , plotFrame)
+        plotFrame = tk.Frame(main_edit)
+        plotFrame.grid(row = 0 , column = 5 , rowspan = 16 , columnspan = 10 , pady = 10)
+        
+        canvas = FigureCanvasTkAgg(fig , master = plotFrame)
+        canvas.draw()
+        toolbar = NavigationToolbar2Tk(canvas , plotFrame , pack_toolbar=False)
+        toolbar.update()
+        toolbar.pack(side=tk.BOTTOM, fill=tk.X)
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        anim = animation.FuncAnimation(fig , animate , init_func = init ,  interval = 20 , blit = True )
 
         #delte plot frame.
         for item in [pidt , p1n , p1 ,i1n , i1 , d1n , d1 , p2n , p2 , i2n , i2 , d2n , d2 , p3n , p3 , i3n , i3 , d3n , d3  , p4n , p4 ,i4n , i4 , d4n , d4
          , p1n_rate , p1_rate ,i1n_rate , i1_rate , d1n_rate , d1_rate , p2n_rate , p2_rate , i2n_rate , i2_rate , d2n_rate , d2_rate , p3n_rate , p3_rate , i3n_rate , i3_rate , d3n_rate , d3_rate 
-         , p4n_rate , p4_rate ,i4n_rate , i4_rate , d4n_rate , d4_rate , pos , thrn , thr , rolln , roll , pitchn , pitch , yawn , yaw , btn_setPID , postFrame]:
+         , p4n_rate , p4_rate ,i4n_rate , i4_rate , d4n_rate , d4_rate , pos , thrn , thr , rolln , roll , pitchn , pitch , yawn , yaw , btn_setPID , postFrame , plotFrame]:
             postPage.append(item)
 
         postPageFirst = 1
+    
+    # anim = animation.FuncAnimation(fig, animate, init_func=init,frames=200, interval=20, blit=True)
+
 
 def writeinPID(main_edit):
 
@@ -272,5 +297,6 @@ def writeinPID(main_edit):
 
 def resume_postPage():
     for widget in postPage:
+        print(widget)
         widget.grid()
 
