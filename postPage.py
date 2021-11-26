@@ -16,6 +16,7 @@ postPage = list()
 postPageFirst = 0
 dv1 = None
 anim = None
+figtype = None
 
 plt.rcParams["figure.figsize"] = [8.00, 5.00]
 # plt.rcParams["figure.autolayout"] = True
@@ -25,17 +26,24 @@ ax = fig.add_subplot(xlim=(0, 2), ylim=(-45, 45))
 line, = ax.plot([], [], lw=2)
 
 def init():
-    global x, y
+    global x , y , figtype
     x = np.linspace(0, 2, 1000)
     y = np.zeros(1000)
-    print(x , y)
     line.set_data(x , y)
     return line,
 
 def animate(i):
-    global x , y
+    global x , y , figtype , ax
     y = np.roll(y , -1)
-    y[-1] = DS.roll
+    if(figtype == 'r'):
+        y[-1] = DS.roll
+    elif(figtype == 'p'):
+        y[-1] = DS.pitch
+    elif(figtype == 'y'):
+        y[-1] = DS.yaw
+    elif(figtype == 'h'):
+        y[-1] = DS.height
+
     line.set_data(x, y)
     return line,
 
@@ -225,10 +233,14 @@ def open_post(main_edit):
 
         postFrame = tk.Frame(main_edit , padx=30)
         postFrame.grid(row=13 , column=5  , rowspan=9 , columnspan=8 , padx = 10 , pady = 30)
+        
+        btn_postRoll = tk.Button(postFrame , text="o", command = partial(figSwitch , 'r')) # 按下後切換 figure roll
         postRoll = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'Roll : 0.00' , anchor="w" , justify=LEFT , width = 15)
-        print('postRoll : ' , postRoll)
+        btn_postPitch = tk.Button(postFrame , text="o", command = partial(figSwitch , 'p')) # 按下後切換 figure pitch
         postPitch = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'Pitch : 0.00' , anchor="w" , justify=LEFT , width = 15)
+        btn_postYaw = tk.Button(postFrame , text="o", command = partial(figSwitch , 'y')) # 按下後切換 figure yaw
         postYaw = tk.Label(postFrame , font=("Arial Bold", 15), text = 'Yaw : 0.00' , anchor="w" , justify=LEFT , width = 15)
+
         accX = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'ACC_X : 0.00' , anchor="w" , justify=LEFT , width = 15)
         accY = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'ACC_Y : 0.00' , anchor="w" , justify=LEFT , width = 15)
         accZ = tk.Label(postFrame , font=("Arial Bold", 15), text = 'ACC_Z : 0.00' , anchor="w" , justify=LEFT , width = 15)
@@ -238,26 +250,34 @@ def open_post(main_edit):
         magX = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'MAG_X : 0.00' , anchor="w" , justify=LEFT , width = 15)
         magY = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'MAG_Y : 0.00' , anchor="w" , justify=LEFT , width = 15)
         magZ = tk.Label(postFrame , font=("Arial Bold", 15), text = 'MAG_Z : 0.00' , anchor="w" , justify=LEFT , width = 15)
+
+        btn_postHeight = tk.Button(postFrame , text="o", command = partial(figSwitch , 'h')) # 按下後切換 figure height
         height = tk.Label(postFrame , font=("Arial Bold", 15) , text = 'Height : 0.00' , anchor="w" , justify=LEFT , width = 15)
         vZ = tk.Label(postFrame , font=("Arial Bold", 15), text = 'V_Z : 0.00' , anchor="w" , justify=LEFT , width = 15)
 
-        postRoll.grid(row=0 , column=0 ,  padx = (0 , 30) , pady= 10) 
-        postPitch.grid(row=1 , column=0 ,  padx = (0 , 30) , pady= 10)
-        postYaw.grid(row=2 , column=0 ,  padx =  (0 , 30) , pady= 10)
-        accX.grid(row=0 , column=1 ,  padx =  (20 , 30), pady= 10)
-        accY.grid(row=1 , column=1 ,  padx =  (20 , 30) , pady= 10)
-        accZ.grid(row=2 , column=1 ,  padx =  (20 , 30), pady= 10)
-        gyroX.grid(row=0 , column=2 ,  padx =  (20 , 30) , pady= 10)
-        gyroY.grid(row=1 , column=2 ,  padx =  (20 , 30), pady= 10)
-        gyroZ.grid(row=2 , column=2 ,  padx =  (20 , 30) , pady= 10)
-        magX.grid(row=0 , column=3 ,  padx =  (20 , 30) , pady= 10)
-        magY.grid(row=1 , column=3 ,  padx =  (20 , 30), pady= 10)
-        magZ.grid(row=2 , column=3 ,  padx = (20 , 30) , pady= 10)
-        height.grid(row=3 , column=0 ,  padx =  (0 , 30), pady= 10)
-        vZ.grid(row=3 , column=1 ,  padx = (20 , 30) , pady= 10)
+        btn_postRoll.grid(row=0 , column=0 ,  padx = (0 , 30) , pady= 10) 
+        postRoll.grid(row=0 , column=1 ,  padx = (0 , 30) , pady= 10) 
+        btn_postPitch.grid(row=1 , column=0 ,  padx = (0 , 30) , pady= 10) 
+        postPitch.grid(row=1 , column=1 ,  padx = (0 , 30) , pady= 10)
+        btn_postYaw.grid(row=2 , column=0 ,  padx = (0 , 30) , pady= 10) 
+        postYaw.grid(row=2 , column=1 ,  padx =  (0 , 30) , pady= 10)
+
+        accX.grid(row=0 , column=2 ,  padx =  (20 , 30), pady= 10)
+        accY.grid(row=1 , column=2 ,  padx =  (20 , 30) , pady= 10)
+        accZ.grid(row=2 , column=2 ,  padx =  (20 , 30), pady= 10)
+        gyroX.grid(row=0 , column=3 ,  padx =  (20 , 30) , pady= 10)
+        gyroY.grid(row=1 , column=3 ,  padx =  (20 , 30), pady= 10)
+        gyroZ.grid(row=2 , column=3 ,  padx =  (20 , 30) , pady= 10)
+        magX.grid(row=0 , column=4 ,  padx =  (20 , 30) , pady= 10)
+        magY.grid(row=1 , column=4 ,  padx =  (20 , 30), pady= 10)
+        magZ.grid(row=2 , column=4 ,  padx = (20 , 30) , pady= 10)
+
+        btn_postHeight.grid(row=3 , column=0 ,  padx =  (0 , 30), pady= 10)
+        height.grid(row=3 , column=1 ,  padx =  (0 , 30), pady= 10)
+        vZ.grid(row=3 , column=2 ,  padx = (20 , 30) , pady= 10)
 
         plotFrame = tk.Frame(main_edit)
-        plotFrame.grid(row = 0 , column = 5 , rowspan = 16 , columnspan = 10 , pady = 10)
+        plotFrame.grid(row = 0 , column = 5 , rowspan = 16 , columnspan = 10 , pady = 10 , padx = 80)
         
         canvas = FigureCanvasTkAgg(fig , master = plotFrame)
         canvas.draw()
@@ -277,6 +297,17 @@ def open_post(main_edit):
     
     # anim = animation.FuncAnimation(fig, animate, init_func=init,frames=200, interval=20, blit=True)
 
+def figSwitch(ftype):
+    global figtype , ax
+    init()
+    figtype = ftype
+    if(ftype == 'h'):
+        print('h')
+        ax.set_ylim((0, 300))
+    elif(ftype == 'y'):
+        ax.set_ylim((-180 , 180))
+    else:
+        ax.set_ylim((-45 , 45))
 
 def writeinPID(main_edit):
 

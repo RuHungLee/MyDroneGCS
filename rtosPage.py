@@ -121,6 +121,7 @@ def open_rtos(main_edit):
         tsk7o = tk.Label(rtosFrame , font=("Arial Bold", 15) , pady =  10 , text = '任務七執行頻率 (HZ) : 0         ' , anchor="w" , justify=LEFT  , width = 30)
         tsk8o = tk.Label(rtosFrame , font=("Arial Bold", 15) , pady =  10 , text = '任務八執行頻率 (HZ) : 0         ' , anchor="w" , justify=LEFT  , width = 30)
 
+        print(tsk1o)
 
         tsk1o.grid(row=1 , column=0 ) 
         tsk2o.grid(row=2 , column=0 )

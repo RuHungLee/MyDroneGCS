@@ -27,11 +27,11 @@ def packetHandler(s , main_edit):
             tsk5 = int.from_bytes(s[20:24], byteorder='big', signed=False)
             print(tsk1 , tsk2 , tsk3 , tsk4 , tsk5)
 
-            main_edit.nametowidget('.!frame.!label36').config(text = '任務一執行頻率 (HZ) : %d'%tsk1)
-            main_edit.nametowidget('.!frame.!label37').config(text = '任務二執行頻率 (HZ) : %d'%tsk2)
-            main_edit.nametowidget('.!frame.!label38').config(text = '任務三執行頻率 (HZ) : %d'%tsk3)
-            main_edit.nametowidget('.!frame.!label39').config(text = '任務四執行頻率 (HZ) : %d'%tsk4)
-            main_edit.nametowidget('.!frame.!label40').config(text = '任務五執行頻率 (HZ) : %d'%tsk5)
+            main_edit.nametowidget('.!frame.!frame3.!label').config(text = '任務一執行頻率 (HZ) : %d'%tsk1)
+            main_edit.nametowidget('.!frame.!frame3.!label2').config(text = '任務二執行頻率 (HZ) : %d'%tsk2)
+            main_edit.nametowidget('.!frame.!frame3.!label3').config(text = '任務三執行頻率 (HZ) : %d'%tsk3)
+            main_edit.nametowidget('.!frame.!frame3.!label4').config(text = '任務四執行頻率 (HZ) : %d'%tsk4)
+            main_edit.nametowidget('.!frame.!frame3.!label5').config(text = '任務五執行頻率 (HZ) : %d'%tsk5)
 
             # main_edit.nametowidget('.!frame.!frame.!label4').config(text = 'ACC_X : %d'%anglePID)
             # main_edit.nametowidget('.!frame.!frame.!label5').config(text = 'ACC_Y : %d'%sendStatus)
